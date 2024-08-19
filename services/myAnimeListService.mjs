@@ -31,8 +31,10 @@ export async function getAnimeListRecent(){
         const modifiedData = responseData.data.map(item => ({
             id: item.node.id,
             title: item.node.title,
-            medium_picture: item.node.main_picture.medium,
-            large_picture: item.node.main_picture.large,
+            main_picture:{
+                medium: item.node.main_picture.medium,
+                large: item.node.main_picture.large,
+            },
             rank: item.ranking.rank
         }));
         return modifiedData;
