@@ -52,3 +52,35 @@ export async function getAnimeListRecent(parm = 0){
         throw error;
     }
 }
+
+export async function getMangaListByTitle(title){
+    try {
+        const formatedTitle = title.replace(/ /g, '+');
+        const response = await axios.get(`https://api.myanimelist.net/v2/manga?q=${formatedTitle}`, {
+            headers:{
+                'X-MAL-CLIENT-ID': `${CLIENT_ID}`
+            },
+            params:{
+                ranking_type: 'manga',
+                limit: 50,
+            }
+        });
+        const responseData = response.data;
+        const modifiedData = responseData.data.map(item => ({
+            id: item.node.id,
+            title: item.node.title,
+            main_picture:{
+                medium: item.node.main_picture.medium,
+                large: item.node.main_picture.large,
+            },
+            paging:{
+                previus: responseData.paging.previous ?? null,
+                next: responseData.paging.next
+            }
+        }));
+        return modifiedData;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

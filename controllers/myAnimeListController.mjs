@@ -1,5 +1,6 @@
 import { fetchAnimeById } from "../services/myAnimeListService.mjs";
 import {getAnimeListRecent} from "../services/myAnimeListService.mjs";
+import { getMangaListByTitle } from "../services/myAnimeListService.mjs";
 
 export async function getAnimeById (req,res) {
     try {
@@ -24,3 +25,12 @@ export async function getAllAnimes(req,res){
   }
 }
 
+export async function getMangasTitle(req,res){
+  try {
+    const {title} = req.params;
+    const data = await getMangaListByTitle(title);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+}
