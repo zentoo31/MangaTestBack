@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/', crearManga);
 router.get('/', obtenerManga);
 router.get('/anime/:id', getAnimeById);
+router.get('/manga/top/:parm', getAllAnimes);
 router.get('/manga/top', getAllAnimes);
 
 export default router;

@@ -1,6 +1,8 @@
 import axios from "axios";
+import translate from "translate";
 
 const CLIENT_ID = "9ef36b64dafd0997444e567b1d595f81";
+translate.engine = "google";
 
 export async function fetchAnimeById(id) {
     try {
@@ -9,14 +11,16 @@ export async function fetchAnimeById(id) {
                 'X-MAL-CLIENT-ID': `${CLIENT_ID}`
             }
         });
-        return response.data;
+        const dataTranslated = response.data;
+        dataTranslated.synopsis = await translate(dataTranslated.synopsis, "es");
+        return dataTranslated;
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
-export async function getAnimeListRecent(){
+export async function getAnimeListRecent(parm = 0){
     try {
         const response = await axios.get("https://api.myanimelist.net/v2/manga/ranking",{
             headers:{
@@ -24,7 +28,8 @@ export async function getAnimeListRecent(){
             },
             params:{
                 ranking_type: 'manga',
-                limit: 20
+                limit: 50,
+                offset: parm
             }
         });
         const responseData = response.data;
@@ -35,7 +40,11 @@ export async function getAnimeListRecent(){
                 medium: item.node.main_picture.medium,
                 large: item.node.main_picture.large,
             },
-            rank: item.ranking.rank
+            rank: item.ranking.rank,
+            paging:{
+                previus: responseData.paging.previous ?? null,
+                next: responseData.paging.next
+            }
         }));
         return modifiedData;
     } catch (error) {

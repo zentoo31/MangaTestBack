@@ -16,7 +16,8 @@ export async function getAnimeById (req,res) {
 
 export async function getAllAnimes(req,res){
   try {
-    const data = await getAnimeListRecent();
+    const { parm } = req.params;
+    const data = await getAnimeListRecent(parm);
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
