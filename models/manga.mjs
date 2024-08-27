@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
-const MangaSchema = mongoose.Schema({
+const MangaSchema = new mongoose.Schema({
     nombre:{
         type:String,
-        required: true
+        required: true,
+        min: 1900
     },
     autor:{
         type:String,
