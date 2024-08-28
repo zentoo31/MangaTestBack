@@ -1,38 +1,41 @@
-import Manga from "../models/manga.mjs";
-export async function createManga(req,res){
-    try {
-        let manga;
-        manga = new Manga(req.body);
-        await manga.save();
-        res.send(manga);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Hubo un error');
-    }
-}
+import {MangaModel} from "../models/manga.mjs"
 
-export async function getManga(req,res){
-    try {
-        const mangas = await Manga.find();
-        res.json(mangas);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Hubo un error');
-    }
-}
-
-export async function updateManga(req,res){
-    try {
-        const {id} = req.params;
-        const mangaActualizado = await Manga.findByIdAndUpdate(id, req.body, {
-            new:true,
-            runValidators: true
-        });
-        if (!mangaActualizado) {
-            return res.status(404).send('El manga no fue encontrado');
+export class MangaController{
+    static async createManga(req,res){
+        try {
+            const {body} = req.body;
+            if (!body) {
+                return res.status(400).json({message: "Falta cuerpo de solicitud"});
+            }
+            const data = await MangaModel.createManga(body);
+            res.send(data);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Hubo un error');
         }
-        res.json(mangaActualizado);
-    } catch (error) {
-        console.error(error);
+    }
+    
+    static async getManga(req,res){
+        try {
+            const mangas = await MangaModel.getManga();
+            res.json(mangas);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Hubo un error');
+        }
+    }
+    
+    static async updateManga(req,res){
+        try {
+            const {id} = req.params;
+            const mangaUpdated = await MangaModel.updateManga(id,req.body);
+            if (!mangaUpdated) {
+                return res.status(404).send('El manga no fue encontrado');
+            }
+            res.json(mangaUpdated);
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
+

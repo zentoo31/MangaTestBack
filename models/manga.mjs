@@ -1,39 +1,25 @@
-import mongoose from "mongoose";
-
-const MangaSchema = new mongoose.Schema({
-    nombre:{
-        type:String,
-        required: true,
-        min: 1900
-    },
-    autor:{
-        type:String,
-        required:true
-    },
-    portada:{
-        type:String,
-        required:true
-    },
-    categorias:{
-        type:[String],
-        required: false
-    },
-    descripcion:{
-        type:String,
-        required:true
-    },
-    estado:{
-        type:String,
-        required:true
-    },
-    fecha_fin:{
-      type:String,
-      required:false  
-    },
-    fecha_ini:{
-        type:String,
-        required:true
+import mangaSchema from "../schemas/mangaSchema.mjs";
+export class MangaModel{
+    
+    static async createManga(input){
+        let manga = new mangaSchema(input);
+        await manga.save();
+        return manga;
     }
-});
 
-export default mongoose.model('Manga', MangaSchema);
+    static async getManga(){
+        const mangas = await mangaSchema.find();
+        return mangas;
+    }
+
+    static async updateManga(id, body){
+        const mangaUpdated = await mangaSchema.findByIdAndUpdate(id,body,{
+            new:true,
+            runValidators: true
+        });
+        return mangaUpdated;
+    }
+    
+
+}
+
