@@ -3,7 +3,8 @@ import {MangaModel} from "../models/manga.mjs"
 export class MangaController{
     static async createManga(req,res){
         try {
-            const {body} = req.body;
+            const body = req.body;
+            console.log(body);
             if (!body) {
                 return res.status(400).json({message: "Falta cuerpo de solicitud"});
             }

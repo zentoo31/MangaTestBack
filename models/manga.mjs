@@ -1,6 +1,5 @@
 import mangaSchema from "../schemas/mangaSchema.mjs";
 export class MangaModel{
-    
     static async createManga(input){
         let manga = new mangaSchema(input);
         await manga.save();

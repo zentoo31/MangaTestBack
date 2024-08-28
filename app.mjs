@@ -1,14 +1,11 @@
-/* eslint-disable no-undef */
 import express from "express"
+import { PORT } from "./config/config.mjs";
 import { conectarDB } from "./config/db.mjs";
-import router from "./routes/routes.mjs";
-import { configDotenv } from "dotenv";
+import router from "./routes/mangaRoutes.mjs";
+import userRouter from "./routes/userRoutes.mjs";
 import cors  from 'cors'
 
-configDotenv({path: "variables.env"});
-
 const app = express();
-const port = process.env.PORT ?? 3000;
 
 conectarDB();
 app.use(cors());
@@ -16,8 +13,9 @@ app.disable('x-powered-by');
 
 app.use(express.json());
 
-app.use('/api', router);
+app.use('/api/manga', router);
+app.use('/api/user', userRouter);
 
-app.listen(port, () => {
-    console.log(`El servidor esta funcionando correctamente en: http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`El servidor esta funcionando correctamente en: http://localhost:${PORT}`);
 });

@@ -1,5 +1,4 @@
 import { myAnimeListService } from "../services/myAnimeListService.mjs";
-
 export class myAnimeListController{
   static async getAnimeById (req,res) {
     try {

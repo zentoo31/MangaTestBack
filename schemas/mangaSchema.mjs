@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 const MangaSchema = new mongoose.Schema({
+    id_myanime:{
+        type:Number,
+        required: true
+    },
     nombre:{
         type:String,
         required: true,
