@@ -34,7 +34,7 @@ export class UserController {
                 })
                 .send({user});
         } catch (error) {
-            res.status(401).send(error.message);            
+            res.status(401).json({message: error.message});            
         }
     }
 

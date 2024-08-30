@@ -23,7 +23,8 @@ export class UserModel{
 
         return {
             email: existingUser.email,
-            username: existingUser.username
+            username: existingUser.username,
+            role: existingUser.role
         };
     }
 }
