@@ -12,7 +12,7 @@ export class UserController {
             const userCreated = await UserModel.registerUser({username,password,email});
             res.send(userCreated);
         } catch (error) {
-            res.status(500).send(error.message);
+            res.status(500).json({message: error.message});
         }
     }
 

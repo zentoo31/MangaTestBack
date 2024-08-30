@@ -11,7 +11,7 @@ export class UserModel{
         const hashedPassword = await bcrypt.hash(password, parseInt(SALT_ROUNDS));
         const newUser = new userSchema({username,password: hashedPassword, email});
         await newUser.save();
-        return newUser;
+        return true;
     }
 
     static async loginUser({email, password}){
