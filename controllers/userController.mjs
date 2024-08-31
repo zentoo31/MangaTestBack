@@ -29,7 +29,7 @@ export class UserController {
             res
                 .cookie('access_token', token,{
                     httpOnly: true,
-                    sameSite: 'strict',
+                    sameSite: 'lax',
                     maxAge: 1000 * 60 * 60
                 })
                 .send({user});
