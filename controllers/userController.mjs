@@ -38,4 +38,30 @@ export class UserController {
         }
     }
 
+    static async logout(req,res){
+        try {
+            res.clearCookie('access_token', {
+                httpOnly: true,
+                sameSite: 'lax',
+            })
+            .status(200)
+            .json({ message: 'Sesión cerrada exitosamente' });
+        } catch (error) {
+            res.status(500).json({message: error.message});
+        }
+    }
+
+
+    static async infoUser(req, res) {        
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'No autenticado' });
+        }
+        const { id } = req.user;
+        try {
+            const user = await UserModel.infoUser(id);        
+            res.send(user);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }

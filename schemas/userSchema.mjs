@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
     role:{
         type: String,
         default: "user"
+    },
+    profile_photo:{
+        type:String,
+        default: "https://static.vecteezy.com/system/resources/previews/043/117/086/non_2x/illustration-of-boy-profile-anime-style-black-silhouette-isolated-on-white-background-free-vector.jpg"
     }
 });
 

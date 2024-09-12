@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoutes.mjs";
 import cors  from 'cors'
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import tokenRouter from "./routes/tokenRoutes.mjs";
 
 const app = express();
 conectarDB();
@@ -20,7 +21,7 @@ app.use((req, res, next) => {
     if (token) {
         try {
             const data = jwt.verify(token, SECRET_KEY);
-            req.user = data;  
+            req.user = {id: data.id};  
         } catch (error) {
             console.error('Token verification failed:', error);
         }
@@ -32,7 +33,7 @@ app.disable('x-powered-by');
 
 app.use('/api/manga', router);
 app.use('/api/user', userRouter);
-
+app.use('/api/token', tokenRouter )
 app.listen(PORT, () => {
     console.log(`El servidor esta funcionando correctamente en: http://localhost:${PORT}`);
 });

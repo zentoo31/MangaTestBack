@@ -22,9 +22,23 @@ export class UserModel{
         if (!isValid) throw new Error("contraseña incorrecta");
 
         return {
+            _id: existingUser._id,
             email: existingUser.email,
             username: existingUser.username,
             role: existingUser.role
         };
     }
+
+    static async infoUser({id}){
+        const user = await userSchema.findOne({id});
+        if (!user) {throw new Error('El usuario no existe');}
+        return{
+            _id: user._id,
+            email: user.email,
+            profile_photo: user.profile_photo,
+            username: user.username,
+            role: user.role
+        }
+    }
+
 }
