@@ -22,6 +22,7 @@ export class UserController {
         }
         const {email, password} = req.body;
         try {
+            res.clearCookie('access_token');
             const user = await UserModel.loginUser({email,password});
             const token = jwt.sign({id: user._id, username: user.username}, SECRET_KEY,{
                 expiresIn: '1h'
@@ -33,6 +34,7 @@ export class UserController {
                     maxAge: 1000 * 60 * 60
                 })
                 .send({user});
+                console.log("Token generado para el usuario:", user);
         } catch (error) {
             res.status(401).json({message: error.message});            
         }
@@ -42,7 +44,7 @@ export class UserController {
         try {
             res.clearCookie('access_token', {
                 httpOnly: true,
-                sameSite: 'lax',
+                sameSite: 'lax'
             })
             .status(200)
             .json({ message: 'Sesión cerrada exitosamente' });
@@ -51,14 +53,13 @@ export class UserController {
         }
     }
 
-
     static async infoUser(req, res) {        
-        if (!req.user || !req.user.id) {
+        if (!req.user || !req.user._id) {  // Asegúrate de que el campo es _id
             return res.status(401).json({ message: 'No autenticado' });
         }
-        const { id } = req.user;
+        const { _id } = req.user;
         try {
-            const user = await UserModel.infoUser(id);        
+            const user = await UserModel.infoUser({ _id });  
             res.send(user);
         } catch (error) {
             res.status(500).json({ message: error.message });

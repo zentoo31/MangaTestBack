@@ -20,6 +20,7 @@ export class UserModel{
 
         const isValid = await bcrypt.compare(password, existingUser.password);
         if (!isValid) throw new Error("contraseña incorrecta");
+        console.log("Usuario autenticado:", existingUser);
 
         return {
             _id: existingUser._id,
@@ -29,16 +30,18 @@ export class UserModel{
         };
     }
 
-    static async infoUser({id}){
-        const user = await userSchema.findOne({id});
-        if (!user) {throw new Error('El usuario no existe');}
-        return{
+    static async infoUser({ _id }) {
+        const user = await userSchema.findOne({ _id });
+        if (!user) {
+            throw new Error('El usuario no existe');
+        }
+        return {
             _id: user._id,
             email: user.email,
             profile_photo: user.profile_photo,
             username: user.username,
             role: user.role
-        }
+        };
     }
 
 }
